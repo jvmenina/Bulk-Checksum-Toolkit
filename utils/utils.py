@@ -16,6 +16,7 @@ def print_log(*message: object, print_type: PrintType = PrintType.MESSAGE, end: 
         print("[ ]", end=": ")
     elif print_type == PrintType.INPUT:
         print("[?]", end=": ")
+        end = ""
     elif print_type == PrintType.NOTICE:
         print("[!]", end=": ")
     elif print_type == PrintType.ERROR:
@@ -93,7 +94,8 @@ def get_dir_info(directory: Path, is_verbose: bool = False, no_checksum: bool = 
 def parse_dir_info_file(dir_info_file_path: Path | str) -> dict[str, FileInfo]:
     checksums: dict[str, FileInfo] = {}
     with open(dir_info_file_path, "r", encoding="utf-8") as fp:
-        fp.readline()[len("FULL PATH: "):]
+        fp.readline()#[len("FULL PATH: "):]
+        fp.readline()#[len("SNAPSHOT DATE: "):]
         for line in fp:
             full_path_str = fp.readline()[6:].rstrip()
             relative_path_str = fp.readline()[6:].rstrip()

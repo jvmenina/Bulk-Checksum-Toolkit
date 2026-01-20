@@ -1,7 +1,7 @@
-import sys, os
+import sys, os, argparse
 from pathlib import Path
-import uuid
-import argparse
+from datetime import datetime
+import time#, uuid, base64
 
 from utils.utils import print_line, print_log, PrintType, calculate_sha256, get_dir_info
 
@@ -21,10 +21,18 @@ def main(source_dir: str, is_verbose: bool, output_dir: str) -> int:
     source_checksums, failed_checksums = get_dir_info(source_path, is_verbose)
     print_log("Done!", print_type=PrintType.NOTICE)
     
-    output_filename = f"{source_path.name} - {uuid.uuid4().hex[:10]}.txt"
+    # Ensure filenames are unique
+    time.sleep(1) 
+    
+    # task_id = uuid.uuid4()
+    # short_task_id = base64.urlsafe_b64encode(task_id.bytes).decode('ascii')[:5]
+    # short_task_id = task_id.hex[:10]
+    output_filename = f"{source_path.name} - {datetime.now().strftime('%Y%m%d%H%M%S')}.txt"
+    final_output_path = output_path / output_filename
     print_log(f"Saving checksums to \"{output_filename}\"...")
-    with open(f"{output_path / output_filename}", "a", encoding="utf-8") as fp:
+    with open(f"{final_output_path}", "a", encoding="utf-8") as fp:
         fp.write(f"FULL PATH: {source_path.resolve()}\n")
+        fp.write(f"SNAPSHOT DATE: {datetime.now().strftime('%A, %Y %B %d %X')}\n")
         idx = 0
         for relative_path, file_info in source_checksums.items():
             idx += 1

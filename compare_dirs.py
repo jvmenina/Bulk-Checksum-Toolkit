@@ -1,7 +1,6 @@
-import sys, os, time
+import sys, os, time, argparse
 from pathlib import Path
 # from tqdm import tqdm
-import argparse
 
 from utils.utils import print_line, print_log, PrintType, calculate_sha256, parse_dir_info_file, get_dir_info
 
